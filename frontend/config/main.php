@@ -45,5 +45,10 @@ return [
         ],
         */
     ],
+    'modules' => [
+        'file-cabinet' => [
+            'class' => 'frontend\modules\fileCabinet\FileCabinet',
+        ],
+    ],
     'params' => $params,
 ];
