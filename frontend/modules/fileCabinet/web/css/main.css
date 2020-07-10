@@ -1,0 +1,7 @@
+.on-all-window {
+    height: 82vh;
+    overflow: auto;
+}
+.box.box-success .box-header.with-border h4 {
+    display: inline-flex;
+}
