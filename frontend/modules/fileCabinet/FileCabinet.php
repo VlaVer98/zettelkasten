@@ -2,10 +2,14 @@
 
 namespace frontend\modules\fileCabinet;
 
+use Yii;
+use yii\base\Module;
+use yii\helpers\Url;
+
 /**
  * file-cabinet module definition class
  */
-class FileCabinet extends \yii\base\Module
+class FileCabinet extends Module
 {
     /**
      * {@inheritdoc}
@@ -18,8 +22,8 @@ class FileCabinet extends \yii\base\Module
     public function init()
     {
         parent::init();
-
         // custom initialization code goes here
-        \Yii::configure($this, require __DIR__ . '/config/main.php');
+        Yii::configure($this, require __DIR__ . '/config/main.php');
+        Yii::$app->user->loginUrl = Url::to('/'.$this->getUniqueId().'/auth/login');
     }
 }
