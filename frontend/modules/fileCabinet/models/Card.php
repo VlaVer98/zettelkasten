@@ -3,6 +3,8 @@
 namespace frontend\modules\fileCabinet\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "card".
@@ -17,7 +19,7 @@ use Yii;
  * @property RelationBetweenCards $parentCards
  * @property CardTag $tags
  */
-class Card extends \yii\db\ActiveRecord
+class Card extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -33,6 +35,21 @@ class Card extends \yii\db\ActiveRecord
     public static function getDb()
     {
         return Yii::$app->get('zettelkasten');
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                // если вместо метки времени UNIX используется datetime:
+                // 'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 
     /**
@@ -95,5 +112,14 @@ class Card extends \yii\db\ActiveRecord
     public static function find()
     {
         return new CardQuery(get_called_class());
+    }
+
+    public function create($header, $text, $id_user)
+    {
+        $this->header = $header;
+        $this->text = $text;
+        $this->id_user = $id_user;
+
+        return $this->insert(false);
     }
 }

@@ -65,4 +65,13 @@ class RelationBetweenCards extends ActiveRecord
     {
         return new RelationBetweenCardsQuery(get_called_class());
     }
+
+    public function create($parent_cart, $child_card, $id_user)
+    {
+        $this->parent_card = $parent_cart;
+        $this->child_card = $child_card;
+        $this->id_user = $id_user;
+
+        return $this->insert(false);
+    }
 }

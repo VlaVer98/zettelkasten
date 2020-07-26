@@ -78,4 +78,13 @@ class CardTag extends ActiveRecord
     {
         return new CardTagQuery(get_called_class());
     }
+
+    public function create($name_card, $tag, $id_user)
+    {
+        $this->name_card = $name_card;
+        $this->tag = $tag;
+        $this->id_user = $id_user;
+
+        return $this->insert(false);
+    }
 }
