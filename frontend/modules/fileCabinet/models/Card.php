@@ -5,6 +5,7 @@ namespace frontend\modules\fileCabinet\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "card".
@@ -16,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property int $id_user
  *
  * @property RelationBetweenCards $childCards
- * @property RelationBetweenCards $parentCards
+ * @property RelationBetweenCards $associatedWithHer
  * @property CardTag $tags
  */
 class Card extends ActiveRecord
@@ -95,7 +96,7 @@ class Card extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery|RelationBetweenCardsQuery
      */
-    public function getParentCards()
+    public function getAssociatedWithHer()
     {
         return $this->hasMany(RelationBetweenCards::className(), ['parent_card' => 'header', 'id_user' => 'id_user']);
     }
@@ -121,5 +122,9 @@ class Card extends ActiveRecord
         $this->id_user = $id_user;
 
         return $this->insert(false);
+    }
+    static function getArrayHeaders($id_user)
+    {
+        return ArrayHelper::map(Card::find()->headers($id_user), 'header', 'header');
     }
 }

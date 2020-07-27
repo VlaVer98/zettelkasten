@@ -9,12 +9,33 @@ use frontend\modules\fileCabinet\models\CreateCardForm;
 use frontend\modules\fileCabinet\models\Tag;
 use Yii;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class CardController extends Controller
 {
     public function actionAll()
     {
-        return $this->render('all');
+        $headerCards = Card::getArrayHeaders(Yii::$app->user->id);
+
+        return $this->render('all', [
+            'headerCards' => $headerCards,
+        ]);
+    }
+
+    public function actionView($name)
+    {
+        $card = Card::find()->where(['header' => $name, 'id_user' => Yii::$app->user->id])->with('tags', 'associatedWithHer')->one();
+
+        if ($card === null) {
+            throw new NotFoundHttpException;
+        }
+
+        $headerCards =  Card::getArrayHeaders(Yii::$app->user->id);
+
+        return $this->render('view', [
+            'card' => $card,
+            'headerCards' => $headerCards,
+        ]);
     }
 
     public function actionCreate()
