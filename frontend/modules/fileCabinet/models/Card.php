@@ -123,6 +123,16 @@ class Card extends ActiveRecord
 
         return $this->insert(false);
     }
+
+    public function edit($header, $text, $id_user)
+    {
+        $this->header = $header;
+        $this->text = $text;
+        $this->id_user = $id_user;
+
+        return $this->update(false);
+    }
+
     static function getArrayHeaders($id_user)
     {
         return ArrayHelper::map(Card::find()->headers($id_user), 'header', 'header');

@@ -40,7 +40,7 @@ class CardController extends Controller
 
     public function actionCreate()
     {
-        $model = new CreateCardForm();
+        $model = new CreateCardForm(['scenario' => CreateCardForm::SCENARIO_CREATE]);
         $model->id_user = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->create()) {
@@ -57,6 +57,35 @@ class CardController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'tags' => $tags,
+            'cards' => $cards
+        ]);
+    }
+
+    public function actionEdit($name)
+    {
+        $card = Card::find()->where(['header' => $name, 'id_user' => Yii::$app->user->id])->with('tags', 'associatedWithHer')->one();
+
+        if ($card === null) {
+            throw new NotFoundHttpException;
+        }
+
+        $model = CreateCardForm::fill($card);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->update()) {
+                Yii::$app->session->setFlash('success', 'Карточка изменена!');
+                return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'Ошибка! Попробуйте еще.');
+            }
+        }
+
+        $tags = Tag::findAll(['id_user' => Yii::$app->user->id]);
+        $cards = Card::findAll(['id_user' => Yii::$app->user->id]);
+
+        return $this->render('edit', [
+            'model' => $model,
+            'card' => $card,
             'tags' => $tags,
             'cards' => $cards
         ]);
