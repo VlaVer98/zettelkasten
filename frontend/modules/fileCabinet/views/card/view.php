@@ -13,6 +13,14 @@ use yii\helpers\Html;
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?= $card->header ?></h3>
+                    <?= Html::a('удалить', ['card/delete', 'name' => $card->header], [
+                        'class' => 'pull-right',
+                        'style' => [
+                            'font-style' => 'italic',
+                            'color' => 'red',
+                            'margin-left' => '10px'
+                        ],
+                    ]) ?>
                     <?= Html::a('редактировать', ['card/edit', 'name' => $card->header], [
                             'class' => 'pull-right',
                             'style' => 'font-style: italic;'

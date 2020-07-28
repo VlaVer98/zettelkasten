@@ -89,4 +89,17 @@ class CardController extends Controller
             'cards' => $cards
         ]);
     }
+
+    public function actionDelete($name)
+    {
+        $card = Card::find()->where(['header' => $name, 'id_user' => Yii::$app->user->id])->with('tags', 'associatedWithHer')->one();
+
+        if($card !== null && $card->delete() !== false) {
+            Yii::$app->session->setFlash('success', 'Карточка удалена!');
+            return $this->redirect('all');
+        } else {
+            Yii::$app->session->setFlash('error', 'Ошибка! Попробуйте еще.');
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
 }
