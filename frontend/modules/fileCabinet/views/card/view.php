@@ -36,7 +36,7 @@ use yii\helpers\Html;
                         <h3>Ссылки:</h3>
                         <?php foreach ($card->associatedWithHer as $associatedCard): ?>
                             <div>
-                                <?= Html::a($associatedCard->child_card, ['card/view', 'name' => $associatedCard->child_card], [
+                                <?= Html::a($associatedCard->child_card, ['card/view', 'name' => $associatedCard->child_card, '#' => $associatedCard->child_card], [
                                     'class' => 'bg-info'
                                 ]) ?>
                             </div>
