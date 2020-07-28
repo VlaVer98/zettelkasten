@@ -12,7 +12,11 @@ class TagController extends Controller
 {
     public function actionAll()
     {
-        return $this->render('all');
+        $tags = Tag::find()->where(['id_user' => Yii::$app->user->id])->all();
+
+        return $this->render('all', [
+            'tags' => $tags,
+        ]);
     }
 
     public function actionCreate()
