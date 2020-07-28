@@ -4,11 +4,13 @@
 namespace frontend\modules\fileCabinet\models;
 
 
+use Exception;
+use Throwable;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
-class CreateCardForm extends Model
+class CardForm extends Model
 {
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
@@ -85,25 +87,12 @@ class CreateCardForm extends Model
         $transaction = $db->beginTransaction();
 
         try {
-            $card = new Card();
-            $card->create($this->header, $this->text, $this->id_user);
-
-            if(!empty($this->tags)) {
-                foreach($this->tags as $tag) {
-                    $cardTag = new CardTag();
-                    $cardTag->create($this->header, $tag, $this->id_user);
-                }
-            }
-
-            if(!empty($this->relationCards)) {
-                foreach($this->relationCards as $relationCard) {
-                    $relationBetweenCards = new RelationBetweenCards();
-                    $relationBetweenCards->create($this->header, $relationCard, $this->id_user);
-                }
-            }
+            $this->createCard();
+            $this->addTagToCard();
+            $this->addLinkToCard();
 
             $transaction->commit();
-        } catch(\Throwable $e) {
+        } catch(Throwable $e) {
             $transaction->rollBack();
             return false;
         }
@@ -116,37 +105,89 @@ class CreateCardForm extends Model
         $transaction = $db->beginTransaction();
 
         try {
-            $card = Card::findOne($this->Card->header, $this->Card->id_user);
-            if(empty($card)) {
-                throw new \Exception();
-            }
+            $this->updateCard();
 
-            if($card->edit($this->header, $this->text, $this->id_user)) {
-                throw new \Exception();
-            }
+            CardTag::deleteAll(['id_user' => $this->id_user, 'name_card' => $this->header]);
+            $this->addTagToCard();
 
-            CardTag::deleteAll(['id_user' => $this->Card->id_user, 'name_card' => $this->Card->header]);
-            if(!empty($this->tags)) {
-                foreach($this->tags as $tag) {
-                    $cardTag = new CardTag();
-                    $cardTag->create($this->header, $tag, $this->id_user);
-                }
-            }
-
-            RelationBetweenCards::deleteAll(['id_user' => $this->Card->id_user, 'parent_card' => $this->Card->header]);
-            if(!empty($this->relationCards)) {
-                foreach($this->relationCards as $relationCard) {
-                    $relationBetweenCards = new RelationBetweenCards();
-                    $relationBetweenCards->create($this->header, $relationCard, $this->id_user);
-                }
-            }
+            RelationBetweenCards::deleteAll(['id_user' => $this->id_user, 'parent_card' => $this->header]);
+            $this->addLinkToCard();
 
             $transaction->commit();
-        } catch(\Throwable $e) {
+        } catch(Throwable $e) {
             $transaction->rollBack();
             return false;
         }
         return true;
+    }
+
+    protected function updateCard()
+    {
+        $card = Card::findOne($this->Card->header, $this->Card->id_user);
+        if (empty($card)) {
+            throw new Exception();
+        }
+
+        $card->attributes = [
+            'header' => $this->header,
+            'text' => $this->text,
+            'id_user' => $this->id_user
+        ];
+
+        $this->scenario = self::SCENARIO_CREATE;
+
+        $this->validate();
+        if (!$card->save(false)) {
+            throw new Exception('1');
+        }
+    }
+
+    protected function createCard()
+    {
+        $card = new Card();
+        $card->attributes = [
+            'header' => $this->header,
+            'text' => $this->text,
+            'id_user' => $this->id_user
+        ];
+
+        if(!$card->save(false)) {
+            throw new Exception('1');
+        }
+    }
+
+    protected function addTagToCard()
+    {
+        if(!empty($this->tags)) {
+            foreach($this->tags as $tag) {
+                $cardTag = new CardTag();
+                $cardTag->attributes = [
+                    'name_card' => $this->header,
+                    'tag' => $tag,
+                    'id_user' => $this->id_user
+                ];
+                if(!$cardTag->save(false)) {
+                    throw new Exception('2');
+                }
+            }
+        }
+    }
+
+    protected function addLinkToCard()
+    {
+        if(!empty($this->relationCards)) {
+            foreach($this->relationCards as $relationCard) {
+                $relationBetweenCards = new RelationBetweenCards();
+                $relationBetweenCards->attributes = [
+                    'parent_card' => $this->header,
+                    'child_card' => $relationCard,
+                    'id_user' => $this->id_user
+                ];
+                if(!$relationBetweenCards->save(false)){
+                    throw new Exception('3');
+                }
+            }
+        }
     }
 
     static function fill(Card $card)

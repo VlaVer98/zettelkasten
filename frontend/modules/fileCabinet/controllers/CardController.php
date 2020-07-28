@@ -5,7 +5,7 @@ namespace frontend\modules\fileCabinet\controllers;
 
 
 use frontend\modules\fileCabinet\models\Card;
-use frontend\modules\fileCabinet\models\CreateCardForm;
+use frontend\modules\fileCabinet\models\CardForm;
 use frontend\modules\fileCabinet\models\Tag;
 use Yii;
 use yii\web\Controller;
@@ -40,7 +40,7 @@ class CardController extends Controller
 
     public function actionCreate()
     {
-        $model = new CreateCardForm(['scenario' => CreateCardForm::SCENARIO_CREATE]);
+        $model = new CardForm(['scenario' => CardForm::SCENARIO_CREATE]);
         $model->id_user = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->create()) {
@@ -70,7 +70,7 @@ class CardController extends Controller
             throw new NotFoundHttpException;
         }
 
-        $model = CreateCardForm::fill($card);
+        $model = CardForm::fill($card);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->update()) {
                 Yii::$app->session->setFlash('success', 'Карточка изменена!');
@@ -85,7 +85,6 @@ class CardController extends Controller
 
         return $this->render('edit', [
             'model' => $model,
-            'card' => $card,
             'tags' => $tags,
             'cards' => $cards
         ]);
