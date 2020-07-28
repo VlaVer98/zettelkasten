@@ -1,6 +1,7 @@
 <?php
 
 use frontend\modules\fileCabinet\components\menuCards\MenuCardsWidget;
+use yii\helpers\Html;
 
 ?>
 <div class="container-fluid">
@@ -8,9 +9,10 @@ use frontend\modules\fileCabinet\components\menuCards\MenuCardsWidget;
         <div class="col-md-3 no-padding">
             <?= MenuCardsWidget::widget(['headerCards' => $headerCards]) ?>
         </div>
-        <div class="col-md-9">
-            <span class="glyphicon glyphicon-search" style="font-size: 30rem;width: 100%;
-    text-align: center;"></span>
+        <div class="col-md-9 no-padding">
+            <?= Html::img('/img/search.gif', [
+                    'width' => '100%'
+            ])?>
         </div>
     </div>
 </div>
