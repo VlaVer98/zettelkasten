@@ -38,7 +38,7 @@ class Tag extends ActiveRecord
             [['id_user', 'name'], 'required'],
             [['id_user'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['id_user', 'name'], 'unique', 'targetAttribute' => ['id_user', 'name']],
+            ['name', 'unique', 'targetAttribute' => ['name', 'id_user'], 'message' => 'Тег с таким именем уже существует'],
         ];
     }
 
@@ -49,7 +49,7 @@ class Tag extends ActiveRecord
     {
         return [
             'id_user' => 'Id User',
-            'name' => 'Name',
+            'name' => 'Имя тега',
         ];
     }
 
