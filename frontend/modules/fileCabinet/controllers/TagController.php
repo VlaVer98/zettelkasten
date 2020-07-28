@@ -58,6 +58,18 @@ class TagController extends Controller
         ]);
     }
 
+    public function actionDelete($name)
+    {
+        $tag = Tag::findOne([Yii::$app->user->id, $name]);
+        if($tag !== null && $tag->delete() !== false) {
+            Yii::$app->session->setFlash('success', 'Тег удален!');
+            return $this->redirect(['tag/all']);
+        }else {
+            Yii::$app->session->setFlash('error', 'Ошибка! Попробуйте еще.');
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
+
     public function actionSearch()
     {
         return $this->render('search');
