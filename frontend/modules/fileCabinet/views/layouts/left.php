@@ -20,10 +20,10 @@
                 'items' => [
                     ['label' => 'Картотека', 'options' => ['class' => 'header']],
                     ['label' => 'Все карточки', 'icon' => 'files-o', 'url' => ['card/all']],
-                    ['label' => 'Добавить карточку', 'icon' => 'plus-square-o', 'url' => ['card/add']],
+                    ['label' => 'Добавить карточку', 'icon' => 'plus-square-o', 'url' => ['card/create']],
                     ['label' => 'Теги', 'options' => ['class' => 'header']],
                     ['label' => 'Все теги', 'icon' => 'tags', 'url' => ['tag/all']],
-                    ['label' => 'Добавить тег', 'icon' => 'plus-square-o', 'url' => ['tag/add']],
+                    ['label' => 'Добавить тег', 'icon' => 'plus-square-o', 'url' => ['tag/create']],
                     ['label' => 'Поиск по тегам', 'icon' => 'search tags', 'url' => ['tag/search']],
                 ],
             ]
