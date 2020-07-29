@@ -1,6 +1,9 @@
 <?php
+
+use frontend\modules\fileCabinet\models\Tag;
 use yii\helpers\Html;
 
+$tags = $dataProvider->getModels();
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -8,12 +11,9 @@ use yii\helpers\Html;
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h4>Теги</h4>
-                    <form class="navbar-form navbar-right" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
+                    <?= $this->render('_searchForm', [
+                        'model' => $searchModel
+                    ]) ?>
                 </div>
                 <div class="box-body">
                     <?php if (!empty($tags)): ?>
@@ -30,8 +30,10 @@ use yii\helpers\Html;
                                 </ul>
                             </div>
                         <?php endforeach; ?>
-                    <?php else: ?>
+                    <?php elseif(!Tag::find()->where(['id_user' => Yii::$app->user->id])->count()): ?>
                         <h3>Тегов пока нет ...</h3>
+                    <?php else: ?>
+                        <h3>По данному запросу нечего не найденно ...</h3>
                     <?php endif; ?>
                 </div>
             </div>

@@ -5,6 +5,7 @@ namespace frontend\modules\fileCabinet\controllers;
 
 
 use frontend\modules\fileCabinet\models\Tag;
+use frontend\modules\fileCabinet\models\TagSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,10 +14,12 @@ class TagController extends Controller
 {
     public function actionAll()
     {
-        $tags = Tag::find()->where(['id_user' => Yii::$app->user->id])->all();
+        $searchModel = new TagSearch();
+        $dataProvider = $searchModel->search(Yii::$app->user->id, Yii::$app->request->get());
 
         return $this->render('all', [
-            'tags' => $tags,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
