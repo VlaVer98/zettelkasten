@@ -30,7 +30,7 @@ class TagController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Тег добвлен!');
-                return $this->goHome();
+                return $this->redirect('all');
             } else {
                 Yii::$app->session->setFlash('error', 'Ошибка! Попробуйте еще.');
             }
@@ -51,7 +51,7 @@ class TagController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Тег изменен!');
-                return $this->goHome();
+                return $this->redirect('all');
             } else {
                 Yii::$app->session->setFlash('error', 'Ошибка! Попробуйте еще.');
             }

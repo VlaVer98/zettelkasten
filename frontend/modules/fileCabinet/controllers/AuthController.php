@@ -51,7 +51,7 @@ class AuthController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect('/');
         }
 
         $model = new LoginForm();
@@ -75,7 +75,7 @@ class AuthController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect('/');
     }
 
     /**
@@ -88,7 +88,7 @@ class AuthController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Спасибо за регистрацию. Пожалуйста, проверьте свой почтовый ящик для подтверждения по электронной почте.');
-            return $this->goHome();
+            return $this->redirect('/');
         }
 
         return $this->render('signup', [
@@ -108,7 +108,7 @@ class AuthController extends Controller
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для дальнейших инструкций.');
 
-                return $this->goHome();
+                return $this->redirect('/');
             } else {
                 Yii::$app->session->setFlash('error', 'К сожалению, мы не можем сбросить пароль для указанного адреса электронной почты.');
             }
@@ -137,7 +137,7 @@ class AuthController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
             Yii::$app->session->setFlash('success', 'Новый пароль успешно сохранен!');
 
-            return $this->goHome();
+            return $this->redirect('/');
         }
 
         return $this->render('resetPassword', [
@@ -163,12 +163,12 @@ class AuthController extends Controller
         if ($user = $model->verifyEmail()) {
             if (Yii::$app->user->login($user)) {
                 Yii::$app->session->setFlash('success', 'Ваш E-mail был подтвержден!');
-                return $this->goHome();
+                return $this->redirect('/');
             }
         }
 
         Yii::$app->session->setFlash('error', 'К сожалению, мы не можем подтвердить ваш аккаунт с помощью предоставленного токена.');
-        return $this->goHome();
+        return $this->redirect('/');
     }
 
     /**
@@ -182,7 +182,7 @@ class AuthController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для дальнейших инструкций.');
-                return $this->goHome();
+                return $this->redirect('/');
             }
             Yii::$app->session->setFlash('error', 'К сожалению, мы не можем переслать подтверждающее письмо на указанный адрес электронной почты.');
         }

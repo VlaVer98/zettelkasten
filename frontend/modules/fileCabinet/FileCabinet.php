@@ -25,5 +25,6 @@ class FileCabinet extends Module
         // custom initialization code goes here
         Yii::configure($this, require __DIR__ . '/config/main.php');
         Yii::$app->user->loginUrl = Url::to('/'.$this->getUniqueId().'/auth/login');
+        Yii::$app->setHomeUrl(Url::to('/'.$this->getUniqueId().'/card/all'));
     }
 }
