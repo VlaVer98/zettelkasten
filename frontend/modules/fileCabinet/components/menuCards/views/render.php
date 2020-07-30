@@ -8,7 +8,7 @@
 
             if (!empty($this->context->headerCards)): ?>
                 <?php foreach ($this->context->headerCards as $key => $headerCard): ?>
-                    <?= Html::a($headerCard, ['card/view', 'name' => $headerCard, '#' => $headerCard], [
+                    <?= Html::a(Html::encode($headerCard), ['card/view', 'name' => $headerCard, '#' => $headerCard], [
                         'class' => 'list-group-item',
                         'id' => $headerCard,
                     ]) ?>

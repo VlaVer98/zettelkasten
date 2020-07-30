@@ -19,7 +19,7 @@ $tags = $dataProvider->getModels();
                     <?php if (!empty($tags)): ?>
                         <?php foreach ($tags as $tag): ?>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default"><?= $tag->name ?></button>
+                                <button type="button" class="btn btn-default"><?= Html::encode($tag->name) ?></button>
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
