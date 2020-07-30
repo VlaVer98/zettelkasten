@@ -43,6 +43,10 @@
                         <!-- /.box-body -->
                     </div>
                 <?php endforeach; ?>
+            <?php else: ?>
+                <?= Html::img('/img/search.gif', [
+                    'width' => '100%'
+                ]) ?>
             <?php endif; ?>
         </div>
     </div>
