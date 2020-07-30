@@ -14,6 +14,8 @@ use yii\web\NotFoundHttpException;
 
 class CardController extends Controller
 {
+    public $defaultAction = 'all';
+
     public function actionAll()
     {
         $headerCards = Card::getArrayHeaders(Yii::$app->user->id);
