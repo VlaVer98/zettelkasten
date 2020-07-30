@@ -8,7 +8,8 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
-    'language' => 'ru',
+    'language' => 'ru-RU',
+    'name' => 'My Zettelkasten',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
