@@ -6,6 +6,7 @@ namespace frontend\modules\fileCabinet\controllers;
 
 use frontend\modules\fileCabinet\models\Card;
 use frontend\modules\fileCabinet\models\CardForm;
+use frontend\modules\fileCabinet\models\CardTagSearch;
 use frontend\modules\fileCabinet\models\Tag;
 use Yii;
 use yii\web\Controller;
@@ -101,5 +102,18 @@ class CardController extends Controller
             Yii::$app->session->setFlash('error', 'Ошибка! Попробуйте еще.');
             return $this->redirect(Yii::$app->request->referrer);
         }
+    }
+
+    public function actionSearchByTags()
+    {
+        $tags = Tag::find()->where(['id_user' => Yii::$app->user->id])->select('name')->asArray()->all();
+        $searchModel = new CardTagSearch();
+        $cardTag = $searchModel->search(Yii::$app->user->id, Yii::$app->request->get())->getModels();
+
+        return $this->render('search', [
+            'cardTag' => $cardTag,
+            'searchModel' => $searchModel,
+            'tags' => $tags
+        ]);
     }
 }
